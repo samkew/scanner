@@ -9,25 +9,33 @@
 <body>
 Reader:
     <div id="qr-reader" style="width:500px"></div>
-Results:
-<textarea id="qr-reader-results">
-Nothing yet
-</textarea>
+Result: <h2 id="qr-reader-results">Nothing yet</h2>
+
+<h1></h1>
 
 <script type="application/javascript">
     var lastResult, countResults = 0;
 
     function onScanSuccess(decodedText, decodedResult) {
-        if (decodedText !== lastResult) {
-            ++countResults;
-            lastResult = decodedText;
-            // Handle on success condition with the decoded message.
-            console.log(`Scan result: ${decodedText}`, decodedResult);
-            $('#qr-reader-results').text(decodedText);
+        ++countResults;
+        lastResult = decodedText;
+        // Handle on success condition with the decoded message.
+        console.log(`Scan result: ${decodedText}`, decodedResult);
+        $('#qr-reader-results').text(decodedText);
+        if (decodedText === "🇬🇧") {
+            $('h1').text("✅");
+        } else {
+            $('h1').text("❌");
         }
+        setTimeout(function () {
+            $('h1').text("");
+            $('#qr-reader-results').text("");
+        }, 2_000);
     }
-    onScanSuccess('test', 'test')
-
+    // 🇬🇧
+    // ✅
+    // ❌
+    // onScanSuccess('test', 'test')
     var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
     html5QrcodeScanner.render(onScanSuccess);
 </script>
