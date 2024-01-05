@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Code Scanner</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+Reader:
+    <div id="qr-reader" style="width:500px"></div>
+Results:
+<textarea id="qr-reader-results">
+Nothing yet
+</textarea>
+
+<script type="application/javascript">
+    var lastResult, countResults = 0;
+
+    function onScanSuccess(decodedText, decodedResult) {
+        if (decodedText !== lastResult) {
+            ++countResults;
+            lastResult = decodedText;
+            // Handle on success condition with the decoded message.
+            console.log(`Scan result: ${decodedText}`, decodedResult);
+            $('#qr-reader-results').text(decodedText);
+        }
+    }
+    onScanSuccess('test', 'test')
+
+    var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess);
+</script>
+</body>
+</html>
